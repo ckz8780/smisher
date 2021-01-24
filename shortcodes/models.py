@@ -1,7 +1,6 @@
 from django.db import models
 from customers.models import Customer
-from datetime import timedelta
-from django.utils import timezone
+from smisher.utils import get_default_expiration
 
 
 # Create your models here.
@@ -25,14 +24,11 @@ class ShortCodeLease(models.Model):
     class Meta:
         ordering = ('shortcode',)
 
-    def _get_default_expiration():
-        return timezone.now() + timedelta(days=30)
-
     leased_to = models.ForeignKey(Customer, on_delete=models.CASCADE)
     shortcode = models.OneToOneField(ShortCode, on_delete=models.CASCADE, related_name='lease')
     description = models.CharField(max_length=10000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField(default=_get_default_expiration)
+    expires_at = models.DateTimeField(default=get_default_expiration)
     is_active = models.BooleanField(default=True)
 
     def deactivate(self):

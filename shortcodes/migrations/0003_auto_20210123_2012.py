@@ -19,9 +19,4 @@ class Migration(migrations.Migration):
             name='shortcodelease',
             options={'ordering': ('shortcode',)},
         ),
-        migrations.AlterField(
-            model_name='shortcodelease',
-            name='expires_at',
-            field=models.DateTimeField(default=shortcodes.models.ShortCodeLease._get_default_expiration),
-        ),
     ]

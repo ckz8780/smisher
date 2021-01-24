@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Project apps
     'customers',
     'shortcodes',
+    'marketplace',
 ]
 
 MIDDLEWARE = [
