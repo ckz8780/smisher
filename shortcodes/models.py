@@ -33,7 +33,12 @@ class ShortCodeLease(models.Model):
     description = models.CharField(max_length=10000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(default=_get_default_expiration)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    def save(self):
+        self.shortcode.is_available = False if self.is_active else True
+        self.shortcode.available_on = self.expires_at if self.is_active else None
+        self.shortcode.save()
 
     def __str__(self):
         return f'{self.shortcode}: {self.leased_to.cust_name}'
