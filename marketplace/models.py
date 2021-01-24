@@ -21,17 +21,26 @@ class LeaseListing(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.listing_id)
+        return self.listing_id
 
 
 class LeaseHistory(models.Model):
     # Field is required in admin, but can be null if leaseis deleted
     lease = models.ForeignKey(ShortCodeLease, on_delete=models.SET_NULL, null=True)
-    # If linked lease is deleted, cache original ID here for reference
+    # TODO: If linked lease is deleted, cache original ID here for reference
     original_lease = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        if self.lease:
+            return f'History for {self.lease}'
+        return f'History for {self.original_lease}'
 
 
 class LeaseTransaction(models.Model):
+
+    class Meta:
+        ordering = ('-txn_date',)
+
     lease_history = models.ForeignKey(LeaseHistory, on_delete=models.PROTECT)
     transferred_from = models.ForeignKey(
         Customer,
@@ -52,3 +61,8 @@ class LeaseTransaction(models.Model):
     txn_type = models.CharField(max_length=4, choices=(('BUY', 'BUY'), ('SELL', 'SELL')))
     txn_value = models.DecimalField(max_digits=6, decimal_places=2)
     notes = models.CharField(max_length=10000)
+
+    def __str__(self):
+        if self.lease_history.lease:
+            return self.lease_history.lease.shortcode
+        return self.lease_history.original_lease
