@@ -10,18 +10,30 @@ class LeaseListing(models.Model):
 
     class Meta:
         ordering = ('-created_at',)
+        # Restrict to only one active listing at a time
+        constraints = [models.UniqueConstraint(
+            name="unique_active_lease_listing",
+            fields=['lease'],
+            condition=models.Q(is_active=True),
+        )]
+        # TODO: restrict creating listings to the current owner of the lease
 
     listing_id = models.UUIDField(default=uuid.uuid4, editable=False)
     listed_by = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='lease_listings')
     lease = models.ForeignKey(ShortCodeLease, on_delete=models.CASCADE, related_name='listing')
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, default=300)
+    lease_expires = models.DateTimeField(null=True, blank=True)  # TODO: This shouldn't be nullable; find a better way
     description = models.CharField(max_length=10000)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(default=get_default_expiration)
     is_active = models.BooleanField(default=True)
 
+    def save(self, *args, **kwargs):
+        self.lease_expires = self.lease.expires_at
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.listing_id
+        return str(self.listing_id)
 
 
 class LeaseHistory(models.Model):

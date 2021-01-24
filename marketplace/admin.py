@@ -5,11 +5,28 @@ from marketplace.models import LeaseListing, LeaseHistory, LeaseTransaction
 
 
 class LeaseListingAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'listing_id',
+        'lease_expires',
+        'created_at',
+    )
+    fields = (
+        'listing_id',
+        'listed_by',
+        'lease',
+        'price',
+        'lease_expires',
+        'description',
+        'created_at',
+        'expires_at',
+        'is_active',
+    )
     list_display = (
         'listing_id',
         'listed_by',
         'lease',
         'price',
+        'lease_expires',
         'description',
         'created_at',
         'expires_at',
