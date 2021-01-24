@@ -25,6 +25,10 @@ class LeaseListing(models.Model):
 
 
 class LeaseHistory(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Lease histories'
+
     # Field is required in admin, but can be null if leaseis deleted
     lease = models.ForeignKey(ShortCodeLease, on_delete=models.SET_NULL, null=True)
     # TODO: If linked lease is deleted, cache original ID here for reference
