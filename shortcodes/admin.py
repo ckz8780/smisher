@@ -8,8 +8,15 @@ class ShortCodeAdmin(admin.ModelAdmin):
         'description',
         'created_at',
         'is_available',
+        'get_lease',
         'available_on',
     )
+
+    def get_lease(self, instance):
+        if instance.lease:
+            return instance.lease.leased_to.cust_name
+        return None
+    get_lease.short_description = 'Leased To'
 
 
 class ShortCodeLeaseAdmin(admin.ModelAdmin):
