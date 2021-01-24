@@ -1,9 +1,10 @@
 from django.db import models
 from customers.models import Customer
+from datetime import timedelta
+from django.utils import timezone
+
 
 # Create your models here.
-
-
 class ShortCode(models.Model):
 
     class Meta:
@@ -24,11 +25,14 @@ class ShortCodeLease(models.Model):
     class Meta:
         ordering = ('shortcode',)
 
+    def _get_default_expiration():
+        return timezone.now() + timedelta(days=30)
+
     leased_to = models.ForeignKey(Customer, on_delete=models.CASCADE)
     shortcode = models.OneToOneField(ShortCode, on_delete=models.CASCADE)
     description = models.CharField(max_length=10000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(default=_get_default_expiration)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
