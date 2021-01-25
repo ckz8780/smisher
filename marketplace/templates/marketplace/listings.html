@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Smisher | Lease Listings{% endblock %}
+{% block content %}
+<h1>Lease Listings</h1>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Listed By</th>
+                <th>Swap Fee</th>
+                <th>Code Expires</th>
+                <th>Description</th>
+                <th>Listed</th>
+                <th>Listing Expires</th>
+                <th>Active Listing?</th>
+                <th>Listing ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for listing in listings %}
+            <tr>
+                <td>{{ listing.lease.shortcode.shortcode }}</td>
+                <td>{{ listing.listed_by.cust_name }}</td>
+                <td>${{ listing.price }}</td>
+                <td>{{ listing.lease_expires }}</td>
+                <td>{{ listing.description }}</td>
+                <td>{{ listing.created_at }}</td>
+                <td>{{ listing.expires_at }}</td>
+                <td>{{ listing.is_active }}</td>
+                <td>{{ listing.listing_id|slice:8 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

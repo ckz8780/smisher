@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smisher{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        {% block nav %}
+        {% if request.user.is_authenticated %}
+        <p>Welcome, {{ request.user }}!</p>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'browse' %}">Browse Shortcodes</a>
+        <a href="{% url 'listings' %}">Browse Lease Swaps</a>
+        <a href="{% url 'account_logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'account_login' %}">Login</a>
+        <a href="{% url 'account_signup' %}">Sign Up</a>
+        {% endif %}
+        {% endblock %}
+    </header>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>
