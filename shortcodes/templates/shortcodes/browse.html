@@ -22,7 +22,11 @@
                 <td>{{ code.is_available }}</td>
                 {% if code.available_on %}
                 <td>{{ code.available_on }}</td>
-                <td> | Bid on it! (?)</td>
+                <td>{% if request.user.customer == code.lease.leased_to %}
+                    | (Your Code)
+                    {% else %}
+                    | Bid on it!
+                    {% endif %}</td>
                 {% else %}
                 <td>Now!</td>
                 {% endif %}

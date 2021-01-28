@@ -23,4 +23,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('shortcodes/', include('shortcodes.urls')),
     path('marketplace/', include('marketplace.urls')),
+    path('campaigns/', include('campaigns.urls')),
 ]

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Smisher | My Campaigns{% endblock %}
+{% block content %}
+<h1>My Campaigns</h1>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Targets</th>
+                <th>Created</th>
+                <th>Provider</th>
+                <th>Begins</th>
+                <th>Ends</th>
+                <th>Campaign ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            <tr>
+                <td>{{ campaign.shortcode }}</td>
+                <td>{{ campaign.targets.count }}</td>
+                <td>{{ campaign.created_at }}</td>
+                <td>{{ campaign.sms_provider }}</td>
+                <td>{{ campaign.start_date }}</td>
+                <td>{{ campaign.end_date }}</td>
+                <td>{{ campaign.campaign_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h1>Targets by Campaign</h1>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Phone Number</th>
+                <th>Messages Sent</th>
+                <th>Replies Received</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            {% for target in campaign.targets.all %}
+            <tr>
+                <td>{{ target.phone_number }}</td>
+                <td>{{ target.messages_sent }}</td>
+                <td>{{ target.replies_received }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h1>Messages</h1>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Target</th>
+                <th>Direction</th>
+                <th>Content</th>
+                <th>Opened?</th>
+                <th>Message ID</th>
+                <th>Campaign ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campaign in campaigns %}
+            {% for target in campaign.targets.all %}
+            {% for message in target.message.all %}
+            <tr>
+                <td>{{ message.created_at }}</td>
+                <td>{{ message.target }}</td>
+                <td>{{ message.msg_direction }}</td>
+                <td>{{ message.msg_content }}</td>
+                <td>{{ message.msg_opened }}</td>
+                <td>{{ message.msg_id }}</td>
+                <td>{{ message.campaign }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
