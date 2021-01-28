@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'customers',
     'shortcodes',
     'marketplace',
+    'campaigns',
 ]
 
 MIDDLEWARE = [
